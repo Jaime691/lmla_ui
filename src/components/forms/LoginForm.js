@@ -1,53 +1,36 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import InlineError from '../messages/InlineError';
-import isEmpty from 'lodash/isEmpty';
+import React from "react";
+import PropTypes from "prop-types";
+import InlineError from "../messages/InlineError";
+import isEmpty from "lodash/isEmpty";
 
 // Semantic UI Components
-import { Form, Button, Message, Icon } from 'semantic-ui-react';
+import { Form, Button, Message, Icon } from "semantic-ui-react";
 
 class LoginForm extends React.Component {
   state = {
     data: {
-      username: '',
-      password: '',
+      username: "",
+      password: ""
     },
     isLoading: false,
-    errors: {},
+    errors: {}
   };
 
   onChange = e =>
     this.setState({
-      data: { ...this.state.data, [e.target.name]: e.target.value },
+      data: { ...this.state.data, [e.target.name]: e.target.value }
     });
 
   onSubmit = () => {
     const errors = this.validate(this.state.data);
     this.setState({ errors });
-    if (isEmpty(errors)) {
-      this.setState({ isLoading: true });
-      this.props.submit(this.state.data).catch(err => {
-        if (err.response.status >= 500) {
-          this.setState({
-            errors: {
-              global: 'No se pudo contactar con el servidor',
-            },
-            isLoading: false,
-          });
-        } else {
-          this.setState({
-            errors: err.response.data.errors,
-            isLoading: false,
-          });
-        }
-      });
-    }
+    console.log(this.props.submit);
   };
 
   validate = data => {
     const errors = {};
-    if (!data.username) errors.username = 'No puede estar en blanco';
-    if (!data.password) errors.password = 'No puede estar en blanco';
+    if (!data.username) errors.username = "No puede estar en blanco";
+    if (!data.password) errors.password = "No puede estar en blanco";
     return errors;
   };
 
@@ -88,19 +71,14 @@ class LoginForm extends React.Component {
           />
           {errors.password && <InlineError text={errors.password} />}
         </Form.Field>
-        <Button
-          primary
-          content="Ingresar"
-          icon="sign in"
-          labelPosition="left"
-        />
+        <Button primary content="Ingresar" icon="sign in" labelPosition="left" />
       </Form>
     );
   }
 }
 
 LoginForm.propTypes = {
-  submit: PropTypes.func.isRequired,
+  submit: PropTypes.func.isRequired
 };
 
 export default LoginForm;

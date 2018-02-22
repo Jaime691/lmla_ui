@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { login } from "../../actions/auth";
+import queryString from 'query-string';
 import {Link, withRouter} from 'react-router-dom';
 import LoginForm from "../forms/LoginForm";
 
@@ -9,6 +9,14 @@ import LoginForm from "../forms/LoginForm";
 import { Grid, Card, Message } from "semantic-ui-react";
 
 class LoginPage extends React.Component {
+
+  componentDidMount() {
+    console.log("Login Mounted");
+    const parsed = queryString.parse(this.props.location.search);
+    console.log(parsed)
+  }
+
+
   submit = data =>
     this.props.login(data).then((user) => {
       this.props.history.push("/")
@@ -32,13 +40,6 @@ class LoginPage extends React.Component {
   }
 }
 
-LoginPage.propTypes = {
-  history: PropTypes.shape({
-    push: PropTypes.func.isRequired
-  }).isRequired,
-  login: PropTypes.func.isRequired,
-  isAuthenticated: PropTypes.bool
-};
 
 
-export default withRouter(connect(null, { login })(LoginPage));
+export default connect(null, {  })(LoginPage);

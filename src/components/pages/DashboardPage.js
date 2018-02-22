@@ -1,12 +1,12 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+import queryString from 'query-string';
 import { withRouter} from 'react-router-dom';
 // Semantic UI Components
 import { Grid, Button } from "semantic-ui-react";
 // Components
-import { logout } from "../../actions/auth";
-import { fetchAllOrders } from "../../actions/orderActions";
+
 
 
 
@@ -17,15 +17,16 @@ class DashboardPage extends React.Component {
       orders: [],
     }; // 18000000 === 1970-01-01
   }
-  componentWillMount() {
-    fetchAllOrders().then(orders => {
-      this.setState({ orders, filteredOrders: orders });
-    });
+
+  componentDidMount() {
+    console.log("Dashboard mounted");
+    const parsed = queryString.parse(this.props.location.search);
+    console.log(parsed)
   }
 
 
   logout = () => {
-    this.props.logout();
+    console.log("Logged out");
     this.props.history.push("/login");
   };
 
@@ -40,14 +41,6 @@ class DashboardPage extends React.Component {
   }
 }
 
-DashboardPage.propTypes = {
-  logout: PropTypes.func.isRequired
-};
 
-function mapStateToProps(state) {
-  return {
-    user: state.user
-  };
-}
 
-export default withRouter(connect(mapStateToProps, { logout })(DashboardPage));
+export default connect(null, {  })(DashboardPage);
